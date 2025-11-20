@@ -1,8 +1,16 @@
 #include <stdio.h>
-#include <strings.h>
+#include <stdlib.h>
+
+// run
+void run(void) {
+	char bin[] = "/bin/sh";
+	char luck[] = "goodluck!\n";
+	fwrite(luck,1,10,stdout);
+	system(bin);
+}
 
 int main(void) {
-	char array[64];
-	gets(array);
-	return (0);
+	char buf[64];
+	gets(buf);
+	return 0;
 }
