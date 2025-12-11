@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+unsigned int m = 0;						// mov eax,ds:0x8049810
+// 4 bytes
 
-int m = 0;						// mov eax,ds:0x8049810
 
 void p(char *buf) {
 	// mov eax,DWORD PTR [ebp+0x8] <--- recupere en dessous du nv base pointer le buffer passe en parametre de p
@@ -17,6 +19,9 @@ void n(void) {
 
 	if (loc != 16930116)		// if loc != 0x1025544 OU cmp eax,0x1025544
 		return ;
+	/*
+		1693 0116
+	*/
 	
 	system("/bin/cat /home/user/level5/.pass");	// mov DWORD PTR [esp],0x8048590; call 0x8048360 <system@plt>
 }
