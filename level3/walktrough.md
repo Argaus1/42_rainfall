@@ -1,27 +1,13 @@
-The goal here is to execute the last line of the v function.
+# LEVEL 3
 
-This line call the system function with /bin/bash, which is exactly what we need to retrieve the password of level4. 
+The v function initiates a locale with a globale, if the locale != 64, the program exits, but if it equal to 64, the program executes a shell with level4 user.
 
-This is because level4 is the owner of the level3 program and we have the s permission flag.
+This program uses fgets and printf. Printf is called with only one argument, and no format specifier. The argument is the buffer filled with user input. This is a case of format string binary exploit : we will use printf to write to the stack.
 
-In order to execute this last line, the global variable m need to be equal to 64 instead of 0.
+When printf has no format specifier provided, if we write %x, printf will read the stack. If we write "AAAA%x %x %x %x %x etc", we see the stack displayed, and one of the arguments is "41414141", it means that it is our input (ascii hex value for A) stored here on the stack. A format specifier (%n) allows us to write to an address using printf. Normally it would write to an address specified in the arguments the number of character written, but since we did not provide any, it will seek for an address to write to in the stack.
 
-To change its value, we need to exploit the format string vulnerability present in the v function.
+We know that the fourth arg on the stack is the buffer we wrote, so if we wrtie an address instead of "AAAA", and ask printf to wrtie the nb of char (this nb would be 64) at the address located at the fourth arg, we can write the address of the global m to make it 64 ! 
 
-    #include  <stdio.h> 
-    void main(int argc, char **argv)
-    {
-        // This line is safe
-        printf("%s\n", argv[1]);
 
-        // This line is vulnerable
-        printf(argv[1]);
-    }
+(python -c 'print "\x8c\x98\x04\x08"+ "x"*60 + "%4$n"' && cat) | ./level3
 
-/////////////
-
-PAS SUR
-
-/////////////
-
-Je crois qu'il faut faire en sorte de override eip pour revenir a une ligne en dessous du test pour activer le reste du program.
