@@ -1,23 +1,11 @@
-9h31
-11h17
+# LEVEL 7
 
-1h46
-
-
-13h10
-18h30
-
-5h20
-
-
-
-
+What we want:
+- use strcpy for the exploit
+- replace the call to puts by a call to m()
 
 
 dest 2e strcpy 0xbffff8f2
-
-
-
 
 address b1 = esp+0x1c - 0x0804a008
 addr b1+4 = 
