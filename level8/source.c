@@ -1,32 +1,43 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-char	a[] = "%p, %p \n";
-char	b[] = "auth ";
-char	c[] = "reset";
+int main(int argc, char** argv, char** envp) {
+    char buf[128];
+    char *auth = NULL;
+    char *service = NULL;
 
-void	*x;
-void	*y;
+    while (true) {
+        printf("%p, %p\n", auth, service);
 
-char	buf[0x80];
+        if (!fgets(buf, sizeof(buf), stdin))
+            break;
 
-char	*auth;
+        if (strncmp(buf, "auth ", 5) == 0) {
+            auth = malloc(4);
+            if (auth)
+                auth[0] = '\0';
 
-int main() {
-	while (1) {
-		printf(a,x,y); 
-		if (fgets(buf,0x80,stdin)==NULL)
-			return (0);
+            char *suffix = buf + 5;
+            size_t len = strnlen(suffix, 32);
 
-		if (strncmp(buf, b, 5) == 0) {
-    		auth = malloc(4);
-			*auth = 0;
-		}
+            if (len <= 30) {
+                strcpy(auth, suffix);
+            }
+        }
 
-		if (strlen(&buf[5]) <= 30)
-			strcpy(auth, buf);			// exploit
+        if (strncmp(buf, "service", 6) == 0) {
+            service = strdup(buf+7);
+        }
 
-		// main+222
-		if (strncmp(buf, c, 5) == 0)
-	}
-	return (0);	
+        if (strncmp(buf, "login", 5) == 0) {
+            if (!auth || !auth[0x20]) {
+                fwrite("Password:\n", 1, 10, stdout);
+            } else {
+                system("/bin/sh");
+            }
+        }
+    }
+
+    return 0;
 }
