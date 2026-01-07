@@ -11,4 +11,4 @@ Since we have to strcpy, the first one is a key and the second one is the value 
 - for the 2nd strcpy, we just have to write the address of the m function into the got entry
 - then after fgets copies level8/.pass into c, the call to puts will be repaced by a call to m, in which c is printed
 
-![heap](./ressources/heap.png)
+![heap](./resources/heap.png)
