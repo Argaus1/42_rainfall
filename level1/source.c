@@ -9,6 +9,12 @@ void run(void) {
 	system(bin);
 }
 
+// int32_t run()
+// {
+//     fwrite("Good... Wait what?\n", 1, 0x13, stdout);
+//     return system("/bin/sh");
+// }
+
 int main(void) {
 	char buf[64];
 	gets(buf);
