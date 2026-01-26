@@ -17,4 +17,6 @@ Breakpoint 2, 0x0017a060 in system () from /lib/i386-linux-gnu/libc.so.6
 ```
 Ici dans la fonction system, on voit que l'adresse de retour sera exit(), cela vient directement du fait qu'on a insere cette addresse dans le buffer de gets(). A esp+4, on a bien /bin/bash, donc ca devrait bien s'executer.
 
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
 On peut ajouter une cmd dans l'env. Complique de trouver l'addresse.

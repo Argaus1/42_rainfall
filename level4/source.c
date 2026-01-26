@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+int m = 0
 void p(char *a0)
 {
     printf(a0);

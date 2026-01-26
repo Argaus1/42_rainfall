@@ -1,20 +1,23 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int32_t v()
+int m = 0;
+
+int v()
 {
-    char var_20c[0x208];
-    fgets(&var_20c, 0x200, stdin);
-    printf(&var_20c); //Use of Format String Vulnerability : inject string with % that can acces or read memory
-    int32_t m_1 = m;
+    char buf[0x208];
+    fgets(buf, 0x200, stdin);
+    printf(buf); //Use of Format String Vulnerability : inject string with % that can acces or read memory
+    //int m_1 = m;
     
-    if (m_1 != 0x40) //0x40 = 64
-        return m_1;
+    if (m != 0x40) //0x40 = 64
+        return m;
     
     fwrite("Wait what?!\n", 1, 0xc, stdout);
     return system("/bin/sh");
 }
 
-int32_t main(int32_t argc, char** argv, char** envp)
+int main(int argc, char** argv, char** envp)
 {
     return v();
 }
