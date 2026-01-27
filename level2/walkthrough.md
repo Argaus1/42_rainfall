@@ -1,22 +1,18 @@
 # LEVEL2
 
-Quand on arrive dans une fonction, $esp = stack pointer. A cette address, on a l'addresse de retour de cette fonction, cad que quand on arrivera a ret, eip va etre charge avec la valeur a esp. A esp + 4: on a l'addresse du premier argument. Le deuxieme argument est a esp+8 etc.
+The main calls a p() function.
 
-Cette facon de passer les arguments vaut pour l'architecture 32-bits.
+This level also is a gets exploitation, which means we will try to overflow the buffer to chage the return value of our p function.
 
-```
-Breakpoint 2, 0x0017a060 in system () from /lib/i386-linux-gnu/libc.so.6
-(gdb) x/xw $esp
-0xbffff730:	0x0016dbe0
-(gdb) x/xw $esp+4
-0xbffff734:	0xbffff91b
-(gdb) x 0xbffff91b
-0xbffff91b:	0x6e69622f
-(gdb) x/s 0xbffff91b
-0xbffff91b:	 "/bin/bash"
-```
-Ici dans la fonction system, on voit que l'adresse de retour sera exit(), cela vient directement du fait qu'on a insere cette addresse dans le buffer de gets(). A esp+4, on a bien /bin/bash, donc ca devrait bien s'executer.
+Finding the offset is made little by little, with gdb, adding more and more 'a' until segfault.
 
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+The difference is that there is an if condition that prevents us from replacing the return of the p function with shell code on the stack.
+What it does is that if the addr starts with b, it prints the addr and kill the process by calling exit, which quits the program without loading EIP.
 
-On peut ajouter une cmd dans l'env. Complique de trouver l'addresse.
+But if EIP is not loaded with an address starting with b, we dont go into the if condition. Puts is called on our buffer, and strdup too. That's the key :
+- strdup copies our buff on the heap and returns its address, that starts with '8'
+- we can write shellcode in our buffer (see lev9 walkthrough to know how to write shellcode)
+- the shellcode will do "execve('/bin/sh')"
+- instead of overwriting the ret address to load EIP with the start of our buffer/shellcode (0xbff..) we will overwrite it with the address returned by strdup (0x8..)
+- to get the addr returned by strdup, set a bp after the call in gdb, once you're there, type "x $eax", this register is loaded with the return value of strdup
+
