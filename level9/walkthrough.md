@@ -6,7 +6,7 @@ This level is about:
 
 Here we have a program in which two instances of the same class are allocated.
 
-They both contain a method, setAnnotation, that takes argv[1] as parameter. Argv[1] is memcpyied at the address this, which means the location of the current class in memory.
+They both contain a method, setAnnotation, that takes argv[1] as parameter. Argv[1] is memcpyied at the address this+4.
 
 They also have another method, probably an overload of +.
 

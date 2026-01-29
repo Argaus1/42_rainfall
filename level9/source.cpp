@@ -11,8 +11,6 @@ public:
 		n = strlen(argv);
 		memcpy(this+4, argv, n);
 	}
-
-	//virtual void	f(N* other) {}
 };
 
 int main(int argc, char **argv) {
@@ -23,7 +21,6 @@ int main(int argc, char **argv) {
 	N* b = new N(6);
 
 	a->setAnnotation(argv[1]);
-	//b->f(a);
-	*a + *b;
+	*a + *b; // b->add(a);
 	return (0);
 }
