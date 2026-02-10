@@ -1,14 +1,28 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+/*
+bonus0@RainFall:~$ ./bonus0 
+ - 
+AAAAAAAAAAAAAAAAAAAA
+ - 
+BBBBBBBBBBBBBBBBB
+AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBBB
+Segmentation fault (core dumped)
+bonus0@RainFall:~$ ./bonus0 
 
+
+
+
+
+*/
 char tiret[] = " - ";
 
 
 // 1ere occurence	:	v(v1) = 0xbffff6b8
-// 2nde occurence	:	v(v2) = 0xbffff6cb
+// 2nde occurence	:	v(v2) = 0xbffff6cc
 void p(char *v, char *tiret) {
-	char buf[0x1000];				// buf = 0xbfffe680
+	char buf[0x1000];				// buf = 0xbfffe680 -> 0xbfffe67b
 	puts(tiret);
 	read(0, buf, 0x1000);
 	
@@ -22,8 +36,8 @@ void p(char *v, char *tiret) {
 // bp = 0xbffff6e8
 // bp + 4 = 0xbffff6ec(eip -> 0x080485b9)
 void pp(char *v0) {
-	char v1[20];
-	char v2[20];
+	char v1[20];		// 0xbffff6b8
+	char v2[20];		// 0xbffff6cc
 
 	p(v1, tiret);
 	p(v2, tiret);
@@ -35,6 +49,7 @@ void pp(char *v0) {
 }
 
 // bp = 0xbffff738
+// main return addr = 0xbffff73c
 int main(void) {
 	char v0[0x2A];		// v0 = 0xbffff706
 	pp(v0);
