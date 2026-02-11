@@ -1,45 +1,58 @@
-void p(char *a0, char *a1)
-{
-    char v0;  // [bp-0x100c]
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+/*
+bonus0@RainFall:~$ ./bonus0 
+ - 
+AAAAAAAAAAAAAAAAAAAA
+ - 
+BBBBBBBBBBBBBBBBB
+AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBBB
+Segmentation fault (core dumped)
+bonus0@RainFall:~$ ./bonus0 
 
-    puts(a1);
-    read(0, &v0, 0x1000);
-    *(strchr(&v0, 10)) = 0;
-    strncpy(a0, &v0, 20);
-    return;
+
+
+
+
+*/
+char tiret[] = " - ";
+
+
+// 1ere occurence	:	v(v1) = 0xbffff6b8
+// 2nde occurence	:	v(v2) = 0xbffff6cc
+void p(char *v, char *tiret) {
+	char buf[0x1000];				// buf = 0xbfffe680 -> 0xbfffe67b
+	puts(tiret);
+	read(0, buf, 0x1000);
+	
+	// mettre un \0 a la place du \n dans buf
+	char *back_0 = strchr(buf, '\n');
+	*back_0 = 0;
+	strncpy(v,buf, 20);
+	return ;
 }
 
-void int operator++(char *ptr)
-{
-    char *v3;  // edi
-    unsigned int result;  // [bp-0x40]
-    char v1[20];  // [bp-0x34]
-    char v2[20];  // [bp-0x20]
+// bp = 0xbffff6e8
+// bp + 4 = 0xbffff6ec(eip -> 0x080485b9)
+void pp(char *v0) {
+	char v1[20];		// 0xbffff6b8
+	char v2[20];		// 0xbffff6cc
 
-    p(&v1, " - ");
-    p(&v2, " - ");
-    strcpy(ptr, &v1);
-    result = 4294967295;
-    v3 = ptr;
-    ptr[1] = ' ';
-    ptr[2] = '\0';
-    strcat(ptr, &v2);
-    return;
+	p(v1, tiret);
+	p(v2, tiret);
+	strcpy(v0, v1);
+	v0[strlen(v1)] = ' ';
+	v0[strlen(v1)+1] = '\0';
+	strcat(v0, v2);
+	return ;
 }
 
-unsigned int main(void)
-{
-    char v0[42];  // [bp-0x2e]
-
-    int operator++(&v0);
-    puts(&v0);
-    return 0;
+// bp = 0xbffff738
+// main return addr = 0xbffff73c
+int main(void) {
+	char v0[0x2A];		// v0 = 0xbffff706
+	pp(v0);
+	puts(v0);
+	return (0);
 }
-
-
-////
-
-// v1 = 0xbffff6b8
-// v2 = 0xbffff6cb
-// v0 = 0xbffff706
-
